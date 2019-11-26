@@ -159,15 +159,20 @@ if(0b1111111111111111 == 65535):
 ###PRZERWA NA HERBATKĘ, SOCZEK, SIKU i REFLEKSJĘ
     
 
+#No to juz wiemy, że procesor to układ elektroniczny, który
+#ma jakąś swoją logiczną strukturę, logiczną organizację, i że procesor
+#przetwarza wyłącznie informacje zakodowane jako 0 i 1(liczby,tekst,grafikę,obrazy,dźwięk)
+#Słowo Komputer wzięło się od angielskiego słowa "compute" czyli "obliczać"
+#i jak nazwa sugeruje główne zadanie komputera to obliczanie
+#a co zabawne wszystkie skomplikowane operacje mogą być wykonane przez komputer
+#za pomocą dodawania- dodawanie dwóch wartości jest elementarną operacją realizowaną prze komputer
+#KAŻDA OPERACJA MATEMATYCZNA MOŻE ZOSTAĆ ZREALIZOWANA ZA POMOCĄ DODAWANIA
+#Stwierdzenie to może niektórym wydać się nieco szalone, ale wiele wyjaśni
+#się w dalszej części kursu, a jeszcze więcej na wyższych szczeblach edukacji :P
+#Na razie przyjrzyjmny się w jaki sposób komputer wykonuje elementarną operację dodawania:
+
+print(0b0000001+0b0000010) #zwróci nam liczbę 3
 
 
-"""
-Oczywiście oprócz operacji logicznych:
-(tzw. LOGIKA BOOLOWSKA, ale o tym uczcie się
-jak będzieicie starsi bo teoretyczny jazgot,
-bardzo oczywiście potrzebny na dalszym etapie edukacji, ale wam na razie nie)
-Procesor jest zdolny do wykonywania
-
-"""
-
+    
 
