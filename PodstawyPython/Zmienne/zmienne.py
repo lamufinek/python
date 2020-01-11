@@ -18,15 +18,17 @@ zera i jedynki symbolizujące brak napięcia elektrycznego (zero) i obecność n
 Przypominam, że chodzi o to samo napięcie, które powoduje przepływ prądu w latarce,
 kiedy umieścimy w niej baterie :P
 
-Po drugie wszystkie informacje przetwarzane przez komputer zapisane są jako zera i jedynki
-ponieważ w wypadku zer i jedynek mamy możliwość łatwego zapisu danych w pamięci
-komputera.
+W takim układzie pamięć komputera musi być przystosowana do przechowywania
+informacji w takiej formie by były użyteczne dla procesora- nie będzie zatem
+zaskoczenia jeśli powiem, że w pamięci komputera informacje również są zapisane
+w formie ciągów zer i jedynek:
 
-Uważam, że na tym etapie edukacji dobrze byłoby wyobrażać sobie pamięć komputera
+uważam, że na tym etapie edukacji dobrze byłoby wyobrażać sobie pamięć komputera
 jako gigantyczne pole uprawne, na którym zamiast ziarenek mamy włożone maleńkie magnesy.
 Magnes posiada 2 bieguny: "+" i "-". Bigun dodatni jednego magnesu będzie przyciągał
 biegun ujemny drugiego magnesu. Na razie wszystkie magnesy na naszym polu są zwrócone
-ku nam swoimi biegunami dodatnimi. Załóżmy, że biegun dodatni oznacza 0.
+ku nam swoimi biegunami dodatnimi (bieguny ujemne są w ziemi, więc ich nie widzimy).
+Załóżmy, że biegun dodatni oznacza 0.
 
 + + + + + + + + + + + + + + + + + +
 + + + + + + + + + + + + + + + + + +
@@ -46,7 +48,7 @@ ku nam swoimi biegunami dodatnimi. Załóżmy, że biegun dodatni oznacza 0.
 + + + + + + + + + + + + + + + + + +
 
 jeśli zechcemy zapisać do pamięci liczbę 25 (czyli binarnie 00000000011001),
-wystarczy w jakimś wierszu zapisać poprzykładać biegun ujemny jakiegoś
+wystarczy w jakimś wierszu poprzykładać biegun ujemny jakiegoś
 "magnesu zapisującego". Taki magnes przyłożyłem na miejscu 1. 4. oraz 5. od prawej
 w wierszu pierwszym. Teraz odpowiednie magnesy są zwrócone do nas biegunami ujemnymi
 , a my w pamięci mamy zapisaną liczbę 25 (czyli binarnie 00000000011001):
@@ -73,3 +75,10 @@ W rzeczywistości każdy wiersz w pamięci komputera posiada swój adres
 
 
 """
+
+
+naszaZmienna = 25
+print(id(naszaZmienna))
+
+
+
