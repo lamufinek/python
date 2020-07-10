@@ -1,0 +1,38 @@
+from turtle import *
+from random import *
+from keyboard import *
+grubosc = 1
+while(True):
+    if(is_pressed("w")):
+        setheading(90)
+        forward(10)
+    elif(is_pressed("s")):
+        setheading(270)
+        forward(10)
+    elif(is_pressed("a")):
+        setheading(180)
+        forward(10)
+    elif(is_pressed("d")):
+        setheading(0)
+        forward(10)
+
+    if(is_pressed("right")):
+        grubosc=grubosc+1
+        pensize(grubosc)
+    elif(is_pressed("left")):
+        grubosc=grubosc-1
+        if(grubosc<1):
+            grubosc=1
+        pensize(grubosc)
+    if(is_pressed("y")):
+        color("white")
+    elif(is_pressed("u")):
+        color("light blue")
+    elif(is_pressed("i")):
+        color("orange")
+    elif(is_pressed("o")):
+        color("purple")
+    elif(is_pressed("p")):
+        color("firebrick")
+    
+        
