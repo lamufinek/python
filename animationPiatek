@@ -47,8 +47,10 @@ class Game(cocos.layer.ColorLayer):
             self.player.image = self.animationLeft
             self.player.velocity = -self.player.speed,0
 
-    
-     
+    def on_key_release(self, symbol, modifiers):
+        if(symbol == key.UP or symbol == key.DOWN or symbol == key.RIGHT or symbol == key.LEFT):
+            self.player.velocity = 0,0
+            self.player.image = self.animationInRest
 
             
 
