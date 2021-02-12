@@ -17,7 +17,14 @@ class Game(cocos.layer.ColorLayer):
         super(Game,self).__init__(202, 202, 125, 155)
         self.collision_manager = cm.CollisionManagerBruteForce()
         img = pyglet.image.load("resources/sprite.png")
+        self.image_grid = pyglet.image.ImageGrid(img, 8,10,item_width= 120, item_height =130)
+        self.animationUp = pyglet.image.Animation.from_image_sequence(self.image_grid[10:20],0.1, True)
+        self.animationDown = pyglet.image.Animation.from_image_sequence(self.image_grid[30:40],0.1, True)
+        self.animationLeft = pyglet.image.Animation.from_image_sequence(self.image_grid[20:30],0.1, True)
+        self.animationRight = pyglet.image.Animation.from_image_sequence(self.image_grid[0:10],0.1, True)
+        self.animationInRest = pyglet.image.Animation.from_image_sequence(self.image_grid[70:73],0.1, True)
 
+        self.player = cocos.sprite.Sprite(self.animationInRest)
         self.player.position = 400, 225
         self.player.velocity = 0, 0
         self.player.speed =150
@@ -25,6 +32,22 @@ class Game(cocos.layer.ColorLayer):
         super().add(self.player)
 
         self.player.do(Move())
+
+    def on_key_press(self, symbol, modifiers):
+        if(symbol == key.UP):
+            self.player.image = self.animationUp
+            self.player.velocity = 0, self.player.speed
+        elif(symbol == key.DOWN):
+            self.player.image = self.animationDown
+            self.player.velocity = 0, -self.player.speed
+        elif(symbol == key.RIGHT):
+            self.player.image = self.animationRight
+            self.player.velocity = self.player.speed,0
+        elif(symbol == key.LEFT):
+            self.player.image = self.animationLeft
+            self.player.velocity = -self.player.speed,0
+
+    
      
 
             
