@@ -1,0 +1,141 @@
+from __future__ import division
+
+from cocos.actions import Move
+from pyglet.window import key
+import cocos.collision_model as cm
+
+
+import cocos
+import resources
+import pyglet
+
+from pyglet.window import key
+
+class Game(cocos.layer.ColorLayer):
+    is_event_handler = True
+    def __init__(self):
+        super(Game,self).__init__(202, 202, 125, 155)
+        self.collision_manager = cm.CollisionManagerBruteForce()
+        self.image = pyglet.image.load("resources/sprite.png")
+        self.fireballImage = pyglet.image.load("resources/fireball.png")
+        self.image_grid = pyglet.image.ImageGrid(self.image, 8,10,item_width=120, item_height =130)
+        self.animationStop = pyglet.image.Animation.from_image_sequence(self.image_grid[60:61], 0.1, True)
+        self.animationUp = pyglet.image.Animation.from_image_sequence(self.image_grid[10:20], 0.1, True)
+        self.animationDown = pyglet.image.Animation.from_image_sequence(self.image_grid[30:40], 0.1, True)
+        self.animationRight = pyglet.image.Animation.from_image_sequence(self.image_grid[0:10], 0.1, True)
+        self.animationLeft = pyglet.image.Animation.from_image_sequence(self.image_grid[20:30], 0.1, True)
+
+
+        self.player = cocos.sprite.Sprite(self.animationStop)
+
+        self.kierunek = "left"
+
+        self.bullets = []
+
+        self.player.position = 400, 225
+        self.player.velocity = 0, 0
+        self.player.speed =150
+
+        super().add(self.player)
+
+        self.player.do(Move())
+#        self.schedule(self.update)
+
+
+    def on_key_press(self, symbol, modifiers):
+        if(symbol == key.SPACE):
+            self.player.speed = 350
+            if(self.player.velocity[0]>0):
+                self.player.velocity = self.player.speed, 0
+            elif(self.player.velocity[0]<0):
+                self.player.velocity = -self.player.speed, 0
+            elif(self.player.velocity[1]>0):
+                self.player.velocity = 0, self.player.speed
+            elif(self.player.velocity[1]<0):
+                self.player.velocity = 0. -self.player.speed
+
+
+        if(symbol == key.O):
+            self.shoot()
+
+        if(symbol == key.P):
+            self.remove()
+            #velocity = krotka w takiej fromie: (x,y)
+            #do zmiennej x odwoÅujemy siÄ piszÄc velocity[0]
+            #do zmiennej y odwoÅujemy siÄ piszÄc velocity[1]
+
+        if(symbol == key.UP):
+            self.player.image = self.animationUp
+            self.player.velocity = 0,self.player.speed
+            self.kierunek = "up"
+        elif(symbol == key.DOWN):
+            self.player.image = self.animationDown
+            self.player.velocity = 0,-self.player.speed
+            self.kierunek = "down"
+        elif(symbol == key.RIGHT):
+            self.player.image = self.animationRight
+            self.player.velocity = self.player.speed, 0
+            self.kierunek = "right"
+        elif(symbol == key.LEFT):
+            self.player.image = self.animationLeft
+            self.player.velocity = -self.player.speed, 0
+            self.kierunek = "left"
+
+    def on_key_release(self, symbol, modifiers):
+        self.player.velocity = 0,0
+        if(symbol == key.SPACE):
+            self.player.speed = 150
+            if(self.player.velocity[0]>0):
+                self.player.velocity = self.player.speed, 0
+            elif(self.player.velocity[0]<0):
+                self.player.velocity = -self.player.speed, 0
+            elif(self.player.velocity[1]>0):
+                self.player.velocity = 0, self.player.speed
+            elif(self.player.velocity[1]<0):
+                self.player.velocity = 0. -self.player.speed
+
+    def shoot(self):
+        l = len(self.bullets)
+        self.bullets.append(cocos.sprite.Sprite(self.fireballImage))
+        self.bullets[l].position = self.player.position
+        self.bullets[l].scale = 0.2
+        super().add(self.bullets[l], z = -2)
+        if(self.kierunek == "right"):
+            self.bullets[l].velocity = 400,0
+            self.bullets[l].rotation =0
+        elif(self.kierunek == "left"):
+            self.bullets[l].velocity = -400,0
+            self.bullets[l].rotation =180
+        elif(self.kierunek == "up"):
+            self.bullets[l].velocity = 0, 400
+            self.bullets[l].rotation =-90
+        elif(self.kierunek == "down"):
+            self.bullets[l].velocity = 0,-400
+            self.bullets[l].rotation =90
+        self.bullets[l].do(Move())
+
+
+    def remove(self):
+        l = len(self.bullets)
+        if(l > 0):
+            super().remove(self.bullets[l-1])
+            self.bullets.pop(l-1)
+
+
+
+
+
+
+
+
+
+cocos.director.director.init(
+    width=800,
+        height=650,
+        caption="game with animation"
+    )
+
+game_layer = Game()
+game_scene = cocos.scene.Scene(game_layer)
+
+cocos.director.director.run(game_scene)
