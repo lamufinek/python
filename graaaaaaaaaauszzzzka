@@ -50,6 +50,7 @@ class Game(cocos.layer.ColorLayer):
         self.player.position = 400, 225
         self.player.velocity = 0, 0
         self.player.speed =150
+        self.kierunek = "left"
 
         super().add(self.player)
 
@@ -76,16 +77,19 @@ class Game(cocos.layer.ColorLayer):
         if(symbol == key.UP):
             self.player.image = self.animationUp
             self.player.velocity = 0,self.player.speed
+            self.kierunek = "up"
         elif(symbol == key.DOWN):
             self.player.image = self.animationDown
             self.player.velocity = 0,-self.player.speed
+            self.kierunek = "down"
         elif(symbol == key.RIGHT):
             self.player.image = self.animationRight
             self.player.velocity = self.player.speed, 0
-         
+            self.kierunek = "right"
         elif(symbol == key.LEFT):
             self.player.image = self.animationLeft
             self.player.velocity = -self.player.speed, 0
+            self.kierunek = "left"
         elif(symbol == key.S):
             self.shoot()
         
@@ -109,7 +113,21 @@ class Game(cocos.layer.ColorLayer):
 
     def shoot(self):
         pocisk = cocos.sprite.Sprite(self.animationFireball)
-        pocisk.postition = self.player.position
+        pocisk.position = self.player.position
+        if(self.kierunek == "right"):
+            pocisk.velocity = 450,0
+            pocisk.rotation = 180
+        elif(self.kierunek == "left"):
+            pocisk.velocity = -450,0
+            pocisk.rotation = 0
+        elif(self.kierunek == "up"):
+            pocisk.velocity = 0,450
+            pocisk.rotation = -90
+        elif(self.kierunek == "down"):
+            pocisk.velocity = 0,-450
+            pocisk.rotation = 90
+            
+        pocisk.do(Move())
         super().add(pocisk)
         
     
