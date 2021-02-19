@@ -17,11 +17,24 @@ class Game(cocos.layer.ColorLayer):
         super(Game,self).__init__(202, 202, 125, 155)
         self.collision_manager = cm.CollisionManagerBruteForce()
         self.image = pyglet.image.load("resources/sprite.png")
+        self.fireballImage = pyglet.image.load("resources/fireball.png")
 
         self.image_grid = pyglet.image.ImageGrid(self.image, 8,10,item_width=120, item_height =130)
-       
+        self.image_grid2 = pyglet.image.ImageGrid(
+                                                    self.fireballImage,
+                                                    8,8,
+                                                    item_width = 64,
+                                                    item_height = 64
+                                                    )
 
         
+        self.animationFireball = pyglet.image.Animation.from_image_sequence(
+
+                                                    self.image_grid2[56:64],
+                                                    0.05,
+                                                    True
+                                                    )
+                                                    
         
         self.animationStop = pyglet.image.Animation.from_image_sequence(self.image_grid[60:61], 0.1, True)
         self.animationUp = pyglet.image.Animation.from_image_sequence(self.image_grid[10:20], 0.1, True)
@@ -32,7 +45,7 @@ class Game(cocos.layer.ColorLayer):
 
         self.player = cocos.sprite.Sprite(self.animationStop)
         
-
+        
 
         self.player.position = 400, 225
         self.player.velocity = 0, 0
@@ -92,8 +105,14 @@ class Game(cocos.layer.ColorLayer):
                 self.player.velocity = 0. -self.player.speed
 
 
-        
+    
 
+    def shoot(self):
+        pocisk = cocos.sprite.Sprite(self.animationFireball)
+        pocisk.postition = self.player.position
+        super().add(pocisk)
+        
+    
 
 
 
@@ -109,3 +128,4 @@ game_layer = Game()
 game_scene = cocos.scene.Scene(game_layer)
 
 cocos.director.director.run(game_scene)
+
