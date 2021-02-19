@@ -1,0 +1,104 @@
+from __future__ import division
+
+from cocos.actions import Move
+from pyglet.window import key
+import cocos.collision_model as cm
+
+
+import cocos
+import resources
+import pyglet
+
+from pyglet.window import key
+
+class Game(cocos.layer.ColorLayer):
+    is_event_handler = True
+    def __init__(self):
+        super(Game,self).__init__(202, 202, 125, 155)
+        self.collision_manager = cm.CollisionManagerBruteForce()
+        self.image = pyglet.image.load("resources/sprite.png")
+        self.image_grid = pyglet.image.ImageGrid(self.image, 8,10,item_width=120, item_height =130)
+        self.animationStop = pyglet.image.Animation.from_image_sequence(self.image_grid[60:61], 0.1, True)
+        self.animationUp = pyglet.image.Animation.from_image_sequence(self.image_grid[10:20], 0.1, True)
+        self.animationDown = pyglet.image.Animation.from_image_sequence(self.image_grid[30:40], 0.1, True)
+        self.animationRight = pyglet.image.Animation.from_image_sequence(self.image_grid[0:10], 0.1, True)
+        self.animationLeft = pyglet.image.Animation.from_image_sequence(self.image_grid[20:30], 0.1, True)
+
+
+        self.player = cocos.sprite.Sprite(self.animationStop)
+
+
+
+        self.player.position = 400, 225
+        self.player.velocity = 0, 0
+        self.player.speed =150
+
+        super().add(self.player)
+
+        self.player.do(Move())
+#        self.schedule(self.update)
+
+
+    def on_key_press(self, symbol, modifiers):
+        if(symbol == key.SPACE):
+            self.player.speed = 350
+            if(self.player.velocity[0]>0):
+                self.player.velocity = self.player.speed, 0
+            elif(self.player.velocity[0]<0):
+                self.player.velocity = -self.player.speed, 0
+            elif(self.player.velocity[1]>0):
+                self.player.velocity = 0, self.player.speed
+            elif(self.player.velocity[1]<0):
+                self.player.velocity = 0. -self.player.speed
+
+
+
+        if(symbol == key.UP):
+            self.player.image = self.animationUp
+            self.player.velocity = 0,self.player.speed
+            self.kierunek = "up"
+        elif(symbol == key.DOWN):
+            self.player.image = self.animationDown
+            self.player.velocity = 0,-self.player.speed
+            self.kierunek = "down"
+        elif(symbol == key.RIGHT):
+            self.player.image = self.animationRight
+            self.player.velocity = self.player.speed, 0
+            self.kierunek = "right"
+        elif(symbol == key.LEFT):
+            self.player.image = self.animationLeft
+            self.player.velocity = -self.player.speed, 0
+            self.kierunek = "left"
+
+    def on_key_release(self, symbol, modifiers):
+        self.player.velocity = 0,0
+        self.player.image = self.animationStop
+        if(symbol == key.SPACE):
+            self.player.speed = 150
+            if(self.player.velocity[0]>0):
+                self.player.velocity = self.player.speed, 0
+            elif(self.player.velocity[0]<0):
+                self.player.velocity = -self.player.speed, 0
+            elif(self.player.velocity[1]>0):
+                self.player.velocity = 0, self.player.speed
+            elif(self.player.velocity[1]<0):
+                self.player.velocity = 0. -self.player.speed
+
+
+
+
+
+
+
+
+
+cocos.director.director.init(
+    width=800,
+        height=650,
+        caption="game with animation"
+    )
+
+game_layer = Game()
+game_scene = cocos.scene.Scene(game_layer)
+
+cocos.director.director.run(game_scene)
