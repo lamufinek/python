@@ -1,4 +1,4 @@
-from __future__ import division
+   from __future__ import division
 
 from cocos.actions import Move
 from pyglet.window import key
@@ -19,14 +19,34 @@ class segment():
         self.graphics = pyglet.image.load("resources/wall.png")
         self.mySprite = cocos.sprite.Sprite(self.graphics)
         self.mySprite.position = x,y
-        self.mySprite.scale = 0.1
+        self.mySprite.scale = 0.05
 
     def returnSprite(self):
         return self.mySprite
 
 
 
+class wall():
+    def __init__(self,xStart,yStart,xFinish,yFinish):
+        ileX = int((xStart-xFinish)/51)
+        ileY = int((yStart-yFinish)/51)
 
+        if(ileX>ileY):
+            ile = ileX
+        else:
+            ile = ileY
+
+
+        if(xStart>xFinish):
+            xIncrease = False
+        else:
+            xIncrease = True
+
+
+        if(yStart>yFinish):
+            yIncrease = False
+        else:
+            yIncrease = True        
 
 
 
