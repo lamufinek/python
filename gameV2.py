@@ -1,4 +1,4 @@
-   from __future__ import division
+from __future__ import division
 
 from cocos.actions import Move
 from pyglet.window import key
@@ -16,7 +16,7 @@ from cocos.actions import Place
 
 class segment():
     def __init__(self,x,y):
-        self.graphics = pyglet.image.load("resources/wall.png")
+        self.graphics = pyglet.image.load("resources/wall.jpg")
         self.mySprite = cocos.sprite.Sprite(self.graphics)
         self.mySprite.position = x,y
         self.mySprite.scale = 0.05
@@ -25,28 +25,78 @@ class segment():
         return self.mySprite
 
 
-
 class wall():
     def __init__(self,xStart,yStart,xFinish,yFinish):
-        ileX = int((xStart-xFinish)/51)
-        ileY = int((yStart-yFinish)/51)
-
-        if(ileX>ileY):
-            ile = ileX
+        if(xStart<xFinish):
+            xIncrease = "yes"
+        elif(xStart>xFinish):
+            xIncrease = "no"
         else:
-            ile = ileY
+            xIncrease = "constant"
 
-
-        if(xStart>xFinish):
-            xIncrease = False
+        if(yStart<yFinish):
+            yIncrease = "yes"
+        elif(yStart>yFinish):
+            yIncrease = "no"
         else:
-            xIncrease = True
+            yIncrease = "constant"
 
-
-        if(yStart>yFinish):
-            yIncrease = False
+        xLenght = abs(xStart-xFinish)
+        yLenght = abs(yStart-yFinish)
+        self.brics = []
+        if(xLenght>yLenght):
+            iterator = xLenght/52
         else:
-            yIncrease = True        
+            iterator = yLenght/52
+        for i in range(int(iterator)):
+            if(xIncrease=="yes"):
+                x = xStart + i*xLenght/iterator
+            elif(xIncrease=="no"):
+                x = xStart - i*xLenght/iterator
+            else:
+                x = xStart
+
+
+            if(yIncrease=="yes"):
+                y = yStart + i*yLenght/iterator
+            elif(yIncrease=="no"):
+                y = yStart - i*yLenght/iterator
+            else:
+                y = yStart
+            duch = segment(x,y).returnSprite()
+            self.brics.append(duch)
+
+    def returnWall(self):
+        return self.brics
+
+
+
+class mapWalls():
+    def __init__(self,collision_manager):
+        positions = []
+        self.batch = cocos.batch.BatchNode()
+        self.mapWalls = []
+        for i in range(int(len(positions)/4)):
+            tablica = (wall(positions[i*4],positions[i*4+1],positions[i*4+2],positions[i*4+3]).returnWall())
+            for obj in tablica:
+                obj.cshape = cm.AARectShape(
+                obj.position,
+                obj.width/2,
+                obj.height/2)
+                collision_manager.add(obj)
+                self.batch.add(obj)
+                self.mapWalls.append(obj)
+
+
+    def returnMapWallsBatch(self):
+        return self.batch
+
+    def returnMapWalls(self):
+        return self.mapWalls
+
+
+
+
 
 
 
@@ -94,7 +144,13 @@ class Game(cocos.layer.ColorLayer):
         super().add(self.player)
 
         #super().add(mapWalls().returnMapWalls())
-        super().add(segment(100,100).returnSprite)
+        self.mapWalls= mapWalls(self.collision_manager)
+        self.wallsColliding = self.mapWalls.returnMapWalls()
+        for obj in self.wallsColliding:
+            self.collision_manager.add(obj)
+        super().add(self.mapWalls.returnMapWallsBatch())
+
+
         #self.collision_manager.add(self.mapWalls
         self.licznik = 0
         self.player.do(Move())
