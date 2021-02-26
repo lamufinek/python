@@ -16,7 +16,7 @@ from cocos.actions import Place
 
 class segment():
     def __init__(self,x,y):
-        self.graphics = pyglet.image.load("resources/wall.jpg")
+        self.graphics = pyglet.image.load("resources/wall.png")
         self.mySprite = cocos.sprite.Sprite(self.graphics)
         self.mySprite.position = x,y
         self.mySprite.scale = 0.05
