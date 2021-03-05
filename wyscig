@@ -39,6 +39,7 @@ def rysujBoisko(obiekt):
 
 class Zawodnik(Turtle):
     def __init__(self,y):
+        super().__init__()
         self.y = y
         super().penup()
         super().goto(-300,self.y)
@@ -57,6 +58,7 @@ class Zawodnik(Turtle):
 class Zawodnicy():
     def __init__(self):
         self.zawodnicy = []
+        self.winner = False
         kolory = ["red", "light blue", "green", "purple"]
         for c in range(10):
             y = -200 + 40*c
@@ -66,17 +68,29 @@ class Zawodnicy():
 
 
     def bieg(self):
+        self.isWinner()
+        if(self.winner):
+            pass
+        else:    
+            for obj in self.zawodnicy:
+                obj.run()
+
+    def isWinner(self):
         for obj in self.zawodnicy:
-            obj.run()
+            if(obj.isWinner):
+                self.winner = True
+
+    
 
 
 
+rysujBoisko(sedzia)
 
 
 peleton = Zawodnicy()
-peleton.bieg()
+while(True):
+    peleton.bieg()
 
-rysujBoisko(sedzia)
 
 
 
