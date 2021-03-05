@@ -42,7 +42,7 @@ class Game(cocos.layer.ColorLayer):
 
         self.image_grid_fireball = pyglet.image.ImageGrid(self.fireballImage, 8,8,item_width=64, item_height =64)
         self.fireballAnimation = pyglet.image.Animation.from_image_sequence(self.image_grid_fireball[8:16], 0.1, True)
-
+        self.activeFireball = False
 
         self.animationStop = pyglet.image.Animation.from_image_sequence(self.image_grid[10:11], 0.1, True)
         self.animationUp = pyglet.image.Animation.from_image_sequence(self.image_grid[10:20], 0.1, True)
@@ -69,8 +69,9 @@ class Game(cocos.layer.ColorLayer):
 
 
     def update(self, dt):
-        for obj in self.bullets:
-            obj.motion()
+        if(self.activeFireball):
+            for obj in self.bullets:
+                obj.motion()
 
 
     def on_key_press(self, symbol, modifiers):
@@ -87,6 +88,8 @@ class Game(cocos.layer.ColorLayer):
             self.kierunek = "left"
         elif(symbol == key.SPACE):
             self.shoot()
+        elif(symbol == key.B):
+            self.fire()
 
     def on_key_release(self, symbol, modifiers):
         self.player.velocity = 0,0
@@ -94,9 +97,14 @@ class Game(cocos.layer.ColorLayer):
 
 
     def shoot(self):
+        self.activeFireball = False
         accBullet = bullet(self.fireballAnimation,self.player.position)
         super().add(accBullet.returnSprite())
         self.bullets.append(accBullet)
+
+    def fire(self):
+        self.activeFireball = True
+        
 
 
 
