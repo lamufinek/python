@@ -23,6 +23,13 @@ class bullet():
         return self.sprite
 
 
+    def motion(self):
+        accPosition = self.sprite.position
+        x = accPosition[0]
+        y = accPosition[1] + 4
+        self.sprite.position = x,y
+
+
 
 
 
@@ -65,7 +72,8 @@ class Game(cocos.layer.ColorLayer):
 
 
     def update(self, dt):
-        pass
+        for obj in self.bullets:
+            obj.motion()
 
     def on_key_press(self, symbol, modifiers):
 
