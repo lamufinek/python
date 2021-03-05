@@ -13,6 +13,15 @@ from pyglet.window import key
 
 
 
+class bullet():
+    def __init__(self,position,image):
+        self.sprite = cocos.sprite.Sprite(image)
+        self.sprite.position = position
+
+
+    def returnSprite(self):
+        return self.sprite
+
 
 
 
@@ -79,8 +88,11 @@ class Game(cocos.layer.ColorLayer):
         self.player.velocity = 0,0
         self.player.image = self.animationStop
 
+    def shoot(self):
+        tempBullet = bullet(self.player.position, self.fireballAnimation)
+        super().add(tempBullet.returnSprite())
+        self.bullets.append(tempBullet)
 
-    
 
 
 
