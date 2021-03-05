@@ -1,0 +1,85 @@
+from turtle import *
+from random import *
+
+
+sedzia = Turtle()
+
+
+def rysujBoisko(obiekt):
+    obiekt.speed(0)
+    obiekt.penup()
+    obiekt.goto(-300, -250)
+    obiekt.setheading(90)
+    obiekt.pendown()
+    obiekt.pensize(2)
+    obiekt.forward(550)
+    obiekt.write("START")
+    obiekt.pensize(1)
+    obiekt.penup()
+    for e in range(60):
+        x = -300 + 10*e
+        y = -250
+        obiekt.penup()
+        obiekt.goto(x,y)
+        obiekt.pendown()
+        for zmienkniaczki in range(11):
+            obiekt.forward(25)
+            obiekt.penup()
+            obiekt.forward(25)
+            obiekt.pendown()
+            
+    penup()
+    goto(300,-250)
+    pendown()
+    obiekt.pensize(3)
+    obiekt.forward(550)
+    obiekt.write("META")
+
+
+
+class Zawodnik(Turtle):
+    def __init__(self,y):
+        self.y = y
+        super().penup()
+        super().goto(-300,self.y)
+        super().pendown()
+        self.isWinner = False
+
+    def run(self):
+        x = super().xcor() + randint(0,10)
+        super().goto(x,self.y)
+        if(super().xcor()>300):
+            self.isWinner = True
+            super().write("SUPER, I AM WINNER")
+
+
+
+class Zawodnicy():
+    def __init__(self):
+        self.zawodnicy = []
+        kolory = ["red", "light blue", "green", "purple"]
+        for c in range(10):
+            y = -200 + 40*c
+            self.zawodnicy.append(Zawodnik(y))
+            kolor = kolory[randint(0,3)]
+            self.zawodnicy[c].color(kolor)
+
+
+    def bieg(self):
+        for obj in self.zawodnicy:
+            obj.run()
+
+
+
+
+
+peleton = Zawodnicy()
+peleton.bieg()
+
+rysujBoisko(sedzia)
+
+
+
+
+
+        
