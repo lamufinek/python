@@ -17,6 +17,8 @@ class bullet():
         self.sprite = cocos.sprite.Sprite(image)
         self.sprite.position = position
         self.sprite.rotation = 180
+        self.liveTime = 120
+        self.terminate = False
 
     def returnSprite(self):
         return self.sprite
@@ -26,6 +28,14 @@ class bullet():
         x = accPosition[0]
         y = accPosition[1] +2
         self.sprite.position = x,y
+
+    def timer(self):
+        self.liveTime = self.liveTime - 1
+        if(self.liveTime<0):
+            self.terminate = True
+
+
+
 
 
 
@@ -72,6 +82,10 @@ class Game(cocos.layer.ColorLayer):
         if(self.activeFireball):
             for obj in self.bullets:
                 obj.motion()
+                obj.timer()
+                if(obj.terminate):
+                    super().remove(obj.returnSprite())
+                    self.bullets.remove(obj)
 
 
     def on_key_press(self, symbol, modifiers):
@@ -104,7 +118,7 @@ class Game(cocos.layer.ColorLayer):
 
     def fire(self):
         self.activeFireball = True
-        
+
 
 
 
