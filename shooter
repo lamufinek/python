@@ -36,7 +36,10 @@ class bullet():
     def timer(self):
         self.lifeTime = self.lifeTime - 1
         if(self.lifeTime<0):
-            self.terminate = True 
+            self.terminate = True
+
+        if(self.lifeTime<20):
+            self.sprite.scale = 3
 
     
 
