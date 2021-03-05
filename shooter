@@ -21,6 +21,12 @@ class bullet():
     def returnSprite(self):
         return self.sprite
 
+    def motion(self):
+        accPosition = self.sprite.position
+        x = accPosition[0]
+        y = accPosition[1] +2
+        self.sprite.position = x,y
+
 
 
 
@@ -58,7 +64,13 @@ class Game(cocos.layer.ColorLayer):
         super().add(self.player)
 
         self.player.do(Move())
-#        self.schedule(self.update)
+        self.schedule(self.update)
+
+
+
+    def update(self, dt):
+        for obj in self.bullets:
+            obj.motion()
 
 
     def on_key_press(self, symbol, modifiers):
@@ -83,7 +95,8 @@ class Game(cocos.layer.ColorLayer):
 
     def shoot(self):
         accBullet = bullet(self.fireballAnimation,self.player.position)
-        super().add(accBullet.returnSprite(),z=-2)
+        super().add(accBullet.returnSprite())
+        self.bullets.append(accBullet)
 
 
 
