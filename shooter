@@ -11,6 +11,20 @@ import pyglet
 
 from pyglet.window import key
 
+
+class bullet():
+    def __init__(self,image,position):
+        self.sprite = cocos.sprite.Sprite(image)
+        self.sprite.position = position
+        self.sprite.rotation = 180
+
+    def returnSprite(self):
+        return self.sprite
+
+
+
+
+
 class Game(cocos.layer.ColorLayer):
     is_event_handler = True
     def __init__(self):
@@ -19,6 +33,11 @@ class Game(cocos.layer.ColorLayer):
         self.image = pyglet.image.load("resources/sprite.png")
         self.fireballImage = pyglet.image.load("resources/fireball.png")
         self.image_grid = pyglet.image.ImageGrid(self.image, 8,10,item_width=120, item_height =130)
+
+        self.image_grid_fireball = pyglet.image.ImageGrid(self.fireballImage, 8,8,item_width=64, item_height =64)
+        self.fireballAnimation = pyglet.image.Animation.from_image_sequence(self.image_grid_fireball[8:16], 0.1, True)
+
+
         self.animationStop = pyglet.image.Animation.from_image_sequence(self.image_grid[10:11], 0.1, True)
         self.animationUp = pyglet.image.Animation.from_image_sequence(self.image_grid[10:20], 0.1, True)
         self.animationDown = pyglet.image.Animation.from_image_sequence(self.image_grid[30:40], 0.1, True)
@@ -43,9 +62,9 @@ class Game(cocos.layer.ColorLayer):
 
 
     def on_key_press(self, symbol, modifiers):
-       
 
-        
+
+
         if(symbol == key.RIGHT):
             self.player.image = self.animationRight
             self.player.velocity = self.player.speed, 0
@@ -54,12 +73,19 @@ class Game(cocos.layer.ColorLayer):
             self.player.image = self.animationLeft
             self.player.velocity = -self.player.speed, 0
             self.kierunek = "left"
+        elif(symbol == key.SPACE):
+            self.shoot()
 
     def on_key_release(self, symbol, modifiers):
         self.player.velocity = 0,0
         self.player.image = self.animationStop
-        
- 
+
+
+    def shoot(self):
+        accBullet = bullet(self.fireballAnimation,self.player.position)
+        super().add(accBullet.returnSprite(),z=-2)
+
+
 
 
 
