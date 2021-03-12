@@ -37,6 +37,11 @@ class enemy():
     def returnSprite(self):
         return self.sprite
 
+    def hitted(self):
+        self.sprite.position = randint(50,750), 700
+        
+
+
         
         
 
@@ -126,8 +131,14 @@ class Game(cocos.layer.ColorLayer):
         self.player.velocity = 0, 0
         self.player.speed =350
 
-        self.wilk = enemy(randint(50,750),self.walkingWolf)
-        super().add(self.wilk.returnSprite())
+        self.wolves = []
+
+        for i in range(10):
+            wilk = enemy(randint(50,750),self.walkingWolf)
+            super().add(wilk.returnSprite())
+            self.collision_manager.add(wilk.returnSprite)
+            self.wolves.append(wilk)
+
         super().add(self.player)
 
         self.player.do(Move())
@@ -136,7 +147,8 @@ class Game(cocos.layer.ColorLayer):
 
 
     def update(self, dt):
-        self.wilk.motion()
+        for wilk in self.wolves:
+            wilk.motion()
         
         for obj in self.bullets:
             obj.motion()
