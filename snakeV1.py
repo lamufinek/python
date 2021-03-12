@@ -44,10 +44,56 @@ class head(Turtle):
             y = super().ycor() 
             super().goto(x,y)
         
-        
- 
 
+class fruit(Turtle):
+    def __init__(self):
+        super().__init__()
+        super().shape("circle")
+        super().penup()
+
+    def hit(self):
+        x = randint(-250,250)
+        y = randint(-250,250)
+        super().goto(x,y)
+
+
+class banan(fruit):
+    def __init__(self):
+        super().__init__()
+        super().color("yellow")
+        super().shapesize(0.5,2.0)
+
+class orange(fruit):
+    def __init__(self):
+        super().__init__()
+        super().color("orange")
+        super().shapesize(0.5,0.5)
+
+class apple(fruit):
+    def __init__(self):
+        super().__init__
+        super().color("red")
+        
+
+
+banan = banan()
+jablko = apple()
+mandarynka = orange()
 glowa = head()
+
+def clockTick():
+    glowa.motion()
+
+    if(glowa.distance(banan)<15):
+        banan.hit()
+
+    if(glowa.distance(jablko)<15):
+        jablko.hit()
+
+    if(glowa.distance(mandarynka)<15):
+        mandarynka.hit()
+
+    ontimer(clockTick,20)
 
 onkey(glowa.up,"w")
 
@@ -57,7 +103,8 @@ onkey(glowa.right,"d")
 
 onkey(glowa.left,"a")
 
-ontimer(glowa.motion,2000)
+clockTick()
+
         
  
         
