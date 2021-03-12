@@ -152,6 +152,7 @@ class Game(cocos.layer.ColorLayer):
             obj.timer()
             if(obj.terminate):
                 super().remove(obj.returnSprite())
+                self.self.collision_manager.remove_tricky(obj.returnSprite())
                 self.bullets.remove(obj)
 
         for wilk in self.wolfs:
