@@ -71,7 +71,7 @@ class orange(fruit):
 
 class apple(fruit):
     def __init__(self):
-        super().__init__
+        super().__init__()
         super().color("red")
         
 
