@@ -14,8 +14,30 @@ from pyglet.window import key
 
 
 
+class enemy():
+    def __init__(self,x,image):
+        self.sprite = cocos.sprite.Sprite(image)
+        self.sprite.position = x, 700
+        self.sprite.scale = 2
+        self.sprite.cshape = cm.AARectShape(
+            self.sprite.position,
+            self.sprite.width/2,
+            self.sprite.height/2
+        )
+
+    def motion(self):
+        accPosition = self.sprite.position
+        x = accPosition[0]
+        y = accPosition[1] - 4
+        self.sprite.position = x,y
+        if(y<0):
+            self.sprite.position = radnint(50,750), 700
+        self.sprite.cshape.center = self.sprite.position
+
+    def returnSprite(self):
+        return self.sprite
+
         
-    
         
 
 
@@ -104,8 +126,8 @@ class Game(cocos.layer.ColorLayer):
         self.player.velocity = 0, 0
         self.player.speed =350
 
-        
-            
+        self.wilk = enemy(randint(50,750),self.walkingWolf)
+        super().add(self.wilk.returnSprite())
         super().add(self.player)
 
         self.player.do(Move())
@@ -114,6 +136,7 @@ class Game(cocos.layer.ColorLayer):
 
 
     def update(self, dt):
+        self.wilk.motion()
         
         for obj in self.bullets:
             obj.motion()
