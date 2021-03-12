@@ -17,6 +17,12 @@ class enemy():
     def __init__(self,x,image):
         self.sprite = cocos.sprite.Sprite(image)
         self.sprite.position = x,700
+        self.sprite.scale = 2.0
+        self.sprite.cshape = cm.AARectShape(
+            self.sprite.position,
+            self.sprite.width/4,
+            self.sprite.height/4
+        )
 
     def motion(self):
         accPosition = self.sprite.position
@@ -25,9 +31,17 @@ class enemy():
         self.sprite.position = x,y
         if(y<-30):
             self.sprite.position = randint(100,700),700
+        self.sprite.cshape.center = self.sprite.position
 
     def returnSprite(self):
         return self.sprite
+
+    def hitted(self):
+        self.sprite.position = randint(100,700),700
+
+        
+        
+    
         
 
 
@@ -41,6 +55,12 @@ class bullet():
         self.sprite.rotation = 180
         self.lifeTime = 120
         self.terminate = False
+        self.sprite.cshape = cm.AARectShape(
+            self.sprite.position,
+            self.sprite.width/2,
+            self.sprite.height/2
+        )
+
 
 
     def returnSprite(self):
@@ -52,6 +72,7 @@ class bullet():
         x = accPosition[0]
         y = accPosition[1] + 4
         self.sprite.position = x,y
+        self.sprite.cshape.center = self.sprite.position
 
 
     def timer(self):
@@ -61,6 +82,9 @@ class bullet():
 
         if(self.lifeTime<20):
             self.sprite.scale = 3
+
+    def hitting(self):
+        self.lifeTime = 20
 
     
 
@@ -106,8 +130,13 @@ class Game(cocos.layer.ColorLayer):
         self.player.velocity = 0, 0
         self.player.speed =350
 
-        self.wilk = enemy(500,self.walkingWolf)
-        super().add(self.wilk.returnSprite())
+        self.wolfs = []
+        for i in range(10):
+            tempWilk = enemy(500,self.walkingWolf)
+            super().add(tempWilk.returnSprite())
+            self.collision_manager.add(tempWilk.returnSprite())
+            self.wolfs.append(tempWilk)
+            
         super().add(self.player)
 
         self.player.do(Move())
@@ -116,13 +145,22 @@ class Game(cocos.layer.ColorLayer):
 
 
     def update(self, dt):
-        self.wilk.motion()
+        for wilk in self.wolfs:
+            wilk.motion()
         for obj in self.bullets:
             obj.motion()
             obj.timer()
             if(obj.terminate):
                 super().remove(obj.returnSprite())
                 self.bullets.remove(obj)
+
+        for wilk in self.wolfs:
+            hitting = self.collision_manager.objs_colliding(wilk.returnSprite())
+            if(len(hitting)>0):
+                wilk.hitted()
+            
+
+        
 
     def on_key_press(self, symbol, modifiers):
 
@@ -131,6 +169,12 @@ class Game(cocos.layer.ColorLayer):
         if(symbol == key.RIGHT):
             self.player.image = self.animationRight
             self.player.velocity = self.player.speed, 0
+            x = self.player.position[0]
+            y = self.player.position[1]
+            if(x>630):
+                x = 630
+            self.player.position = x,y 
+
             self.kierunek = "right"
         elif(symbol == key.LEFT):
             self.player.image = self.animationLeft
@@ -148,6 +192,7 @@ class Game(cocos.layer.ColorLayer):
     def shoot(self):
         tempBullet = bullet(self.player.position, self.fireballAnimation)
         super().add(tempBullet.returnSprite())
+        self.collision_manager.add(tempBullet.returnSprite())
         self.bullets.append(tempBullet)
 
 
