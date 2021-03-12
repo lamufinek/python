@@ -1,4 +1,5 @@
 from __future__ import division
+from random import *
 
 from cocos.actions import Move
 from pyglet.window import key
@@ -10,6 +11,26 @@ import resources
 import pyglet
 
 from pyglet.window import key
+
+
+class enemy():
+    def __init__(self,x,image):
+        self.sprite = cocos.sprite.Sprite(image)
+        self.sprite.position = x,700
+
+    def motion(self):
+        accPosition = self.sprite.position
+        x = accPosition[0]
+        y = accPosition[1] - 2
+        self.sprite.position = x,y
+        if(y<-30):
+            self.sprite.position = randint(100,700),700
+
+    def returnSprite(self):
+        return self.sprite
+        
+
+
 
 
 
@@ -56,7 +77,14 @@ class Game(cocos.layer.ColorLayer):
         self.collision_manager = cm.CollisionManagerBruteForce()
         self.image = pyglet.image.load("resources/sprite.png")
         self.fireballImage = pyglet.image.load("resources/fireball.png")
+        self.wolfImage = pyglet.image.load("resources/wolf.png")
+        
         self.image_grid = pyglet.image.ImageGrid(self.image, 8,10,item_width=120, item_height =130)
+        self.image_grid2 = pyglet.image.ImageGrid(self.wolfImage, 6,20,item_width=32, item_height =64)
+
+        self.walkingWolf = pyglet.image.Animation.from_image_sequence(self.image_grid2[40:45], 0.1, True)
+        self.wolfKnockout = pyglet.image.Animation.from_image_sequence(self.image_grid2[66:70], 0.1, True)
+        
 
         self.image_grid_fireball = pyglet.image.ImageGrid(self.fireballImage, 8,8,item_width=64, item_height =64)
         self.fireballAnimation = pyglet.image.Animation.from_image_sequence(self.image_grid_fireball[8:16], 0.1, True)
@@ -78,6 +106,8 @@ class Game(cocos.layer.ColorLayer):
         self.player.velocity = 0, 0
         self.player.speed =350
 
+        self.wilk = enemy(500,self.walkingWolf)
+        super().add(self.wilk.returnSprite())
         super().add(self.player)
 
         self.player.do(Move())
@@ -86,6 +116,7 @@ class Game(cocos.layer.ColorLayer):
 
 
     def update(self, dt):
+        self.wilk.motion()
         for obj in self.bullets:
             obj.motion()
             obj.timer()
