@@ -1,3 +1,4 @@
+
 from turtle import *
 from random import *
 
@@ -21,6 +22,27 @@ class head(Turtle):
         self.direction = "right"
     def left(self):
         self.direction = "left"
+
+
+    def motion(self):
+        if(self.direction == "up"):
+            x = super().xcor()
+            y = super().ycor() + 10
+            super().goto(x,y)
+        elif(self.direction == "down"):
+            x = super().xcor()
+            y = super().ycor() - 10
+            super().goto(x,y)
+
+        elif(self.direction == "left"):
+            x = super().xcor() - 10
+            y = super().ycor() 
+            super().goto(x,y)
+
+        elif(self.direction == "right"):
+            x = super().xcor() + 10
+            y = super().ycor() 
+            super().goto(x,y)
         
         
  
@@ -34,10 +56,13 @@ onkey(glowa.down,"s")
 onkey(glowa.right,"d")
 
 onkey(glowa.left,"a")
-        
+
+ontimer(glowa.motion,2000)
         
  
         
  
 listen()
 mainloop()
+
+
