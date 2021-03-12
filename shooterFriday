@@ -31,7 +31,7 @@ class enemy():
         y = accPosition[1] - 4
         self.sprite.position = x,y
         if(y<0):
-            self.sprite.position = radnint(50,750), 700
+            self.sprite.position = randint(50,750), 700
         self.sprite.cshape.center = self.sprite.position
 
     def returnSprite(self):
