@@ -178,7 +178,19 @@ class Game(cocos.layer.ColorLayer):
                 self.collision_manager.remove_tricky(obj.returnSprite())
                 self.bullets.remove(obj)
 
-      
+
+        for wilk in self.wolves:
+            for bullet in self.bullets:
+                zmienna = self.collision_manager.they_collide(wilk.returnSprite(),bullet.returnSprite())
+                if(zmienna):
+                    wilk.hitted()
+                    bullet.hitting()
+                    super().remove(bullet.returnSprite())
+                    self.collision_manager.remove_tricky(bullet.returnSprite())
+                    self.bullets.remove(bullet)
+
+       
+
         
         
 
