@@ -102,7 +102,7 @@ class bullet():
             self.sprite.scale = 3
 
     def hitting(self):
-        self.lifeTime = 20
+        self.lifeTime = 5
 
     
 
@@ -161,6 +161,13 @@ class Game(cocos.layer.ColorLayer):
         self.player.do(Move())
         self.schedule(self.update)
 
+        self.points = 0
+        self.lives = 10
+
+        self.labelPoints = cocos.text.Label("Points",font_size =32, font_name = "Comic Sans", color = (20,255,20,80))
+        self.labelPoints.position = 700,600
+        super().add(self.labelPoints)
+        self.labelPoints.element.text = str(self.points)
 
 
     def update(self, dt):
@@ -180,6 +187,11 @@ class Game(cocos.layer.ColorLayer):
                 zmienna = self.collision_manager.they_collide(wilk.returnSprite(),bullet.returnSprite())
                 if(zmienna):
                     wilk.hitted()
+                    bullet.hitting()
+                    self.collision_manager.remove_tricky(bullet.returnSprite())
+                    self.bullets.remove(bullet)
+                    super().remove(bullet.returnSprite())
+
 
         
         
