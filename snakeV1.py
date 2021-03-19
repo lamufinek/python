@@ -75,6 +75,18 @@ class body():
     def returnLastY(self):
         ileElementow = len(self.Ypos)
         return self.Ypos[ileElementow-1]
+
+    def update(self):
+        for i in range(len(self.segments)-1, 0, -1 ):
+            self.Xpos[i] = self.Xpos[i-1]
+            self.Ypos[i] = self.Ypos[i-1]
+            x = self.Xpos[i]
+            y = self.Ypos[i]
+            self.segments[i].goto(x,y)
+
+        self.Xpos[0] = self.segments[0].xcor()
+        self.Ypos[0] = self.segments[0].ycor()
+
         
 
 
@@ -144,6 +156,8 @@ def clockTick():
         x= cialo.returnLastX()
         y= cialo.returnLastY()
         cialo.enlarge(segment(x,y))
+
+    cialo.update()
 
 
     ontimer(clockTick,20)
