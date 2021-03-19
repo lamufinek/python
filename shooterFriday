@@ -19,6 +19,8 @@ class enemy():
         self.sprite = cocos.sprite.Sprite(image)
         self.sprite.position = x, 700
         self.sprite.scale = 2
+        self.time = 0
+        self.canMove = True
         self.sprite.cshape = cm.AARectShape(
             self.sprite.position,
             self.sprite.width/2,
@@ -26,20 +28,35 @@ class enemy():
         )
 
     def motion(self):
-        accPosition = self.sprite.position
-        x = accPosition[0]
-        y = accPosition[1] - 4
-        self.sprite.position = x,y
-        if(y<0):
-            self.sprite.position = randint(50,750), 700
-        self.sprite.cshape.center = self.sprite.position
+        self.colorTimer()
+        self.setColor()
+        if(self.canMove):
+            accPosition = self.sprite.position
+            x = accPosition[0]
+            y = accPosition[1] - 4 - randint(1,3)
+            self.sprite.position = x,y
+            if(y<0):
+                self.sprite.position = randint(50,750), 700
+            self.sprite.cshape.center = self.sprite.position
 
     def returnSprite(self):
         return self.sprite
 
     def hitted(self):
-        self.sprite.position = randint(50,750), 700
-        
+        self.time = 5
+
+    def colorTimer(self):
+        self.time = self.time - 1
+
+    def setColor(self):
+        if(self.time>0):
+            self.sprite.color = (255,30,30)
+            self.canMove = False
+        elif(self.time == 0):
+            self.sprite.position = randint(50,750), 700
+        else:
+            self.sprite.color = (255,255,255)
+            self.canMove = True
 
 
         
