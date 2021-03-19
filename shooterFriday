@@ -194,7 +194,7 @@ class Game(cocos.layer.ColorLayer):
 
         self.wolves = []
 
-        for i in range(15):
+        for i in range(5):
             wilk = enemy(randint(50,750),self.walkingWolf)
             super().add(wilk.returnSprite())
             self.collision_manager.add(wilk.returnSprite)
@@ -206,12 +206,26 @@ class Game(cocos.layer.ColorLayer):
         self.schedule(self.update)
         self.lives = 10
         self.motion = True
+        self.points = 0
+
+        self.labelPoints = cocos.text.Label(str(self.points), font_size = 32, font_name = "Comic Sans", color = (255,20,147,100))
+        self.labelLives = cocos.text.Label(str(self.lives), font_size = 32, font_name = "Comic Sans", color = (25,255,25,100))
+
+        self.labelPoints.position = 700,600
+        self.labelLives.position = 50,600
+
+        super().add(self.labelPoints)
+        super().add(self.labelLives)
+
+        
 
        
 
     def update(self, dt):
+        self.labelLives.element.text = str(self.lives)
         for wilk in self.wolves:
             self.lives = wilk.motion(self.lives)
+            
             
         
         for obj in self.bullets:
@@ -228,17 +242,19 @@ class Game(cocos.layer.ColorLayer):
                 zmienna = self.collision_manager.they_collide(wilk.returnSprite(),bullet.returnSprite())
                 if(zmienna):
                     wilk.hitted()
+                    self.points = self.points + 1
+                    self.labelPoints.element.text = str(self.points)
                     bullet.hitting()
                     super().remove(bullet.returnSprite())
-                    pos= bullet.returnSprite().position
-                    x = pos[0]
-                    y=  pos[1]
+                    #pos= bullet.returnSprite().position
+                    #x = pos[0]
+                    #y=  pos[1]
                     self.collision_manager.remove_tricky(bullet.returnSprite())
                     self.bullets.remove(bullet)
-                    tempBullet = bulletModified((x,y), self.fireballAnimation)
-                    super().add(tempBullet.returnSprite())
-                    self.collision_manager.add(tempBullet.returnSprite())
-                    self.bullets.append(tempBullet)
+                    #tempBullet = bulletModified((x,y), self.fireballAnimation)
+                    #super().add(tempBullet.returnSprite())
+                    #self.collision_manager.add(tempBullet.returnSprite())
+                    #self.bullets.append(tempBullet)
                     
 
        
