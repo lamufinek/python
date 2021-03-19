@@ -1,4 +1,3 @@
-
 from turtle import *
 from random import *
 
@@ -45,16 +44,57 @@ class head(Turtle):
             super().goto(x,y)
         
 
+class segment(Turtle):
+    def __init__(self,x,y):
+        super().__init__()
+        super().shape("square")
+        super().color("deep pink")
+        super().penup()
+        super().speed(0)
+        super().setpos(x,y)
+        
+    def goto(self,x,y):
+        super().goto(x,y)
+
+
+class body():
+    def __init__(self):
+        self.segments = []
+        self.Xpos = []
+        self.Ypos = []
+
+    def enlarge(self,segment):
+        self.segments.append(segment)
+        self.Xpos.append(segment.xcor())
+        self.Ypos.append(segment.ycor())
+
+    def returnLastX(self):
+        ileElementow = len(self.Xpos)
+        return self.Xpos[ileElementow-1]
+
+    def returnLastY(self):
+        ileElementow = len(self.Ypos)
+        return self.Ypos[ileElementow-1]
+        
+
+
+
+
+        
+    
 class fruit(Turtle):
     def __init__(self):
         super().__init__()
         super().shape("circle")
         super().penup()
+        super().speed(0)
 
     def hit(self):
         x = randint(-250,250)
         y = randint(-250,250)
         super().setpos(x,y)
+
+
 
 
 class banan(fruit):
@@ -80,18 +120,31 @@ banan = banan()
 jablko = apple()
 mandarynka = orange()
 glowa = head()
+cialo = body()
+cialo.enlarge(glowa)
 
 def clockTick():
     glowa.motion()
 
     if(glowa.distance(banan)<15):
         banan.hit()
+        x= cialo.returnLastX()
+        y= cialo.returnLastY()
+        cialo.enlarge(segment(x,y))
 
     if(glowa.distance(jablko)<15):
         jablko.hit()
+        x= cialo.returnLastX()
+        y= cialo.returnLastY()
+        cialo.enlarge(segment(x,y))
+
 
     if(glowa.distance(mandarynka)<15):
         mandarynka.hit()
+        x= cialo.returnLastX()
+        y= cialo.returnLastY()
+        cialo.enlarge(segment(x,y))
+
 
     ontimer(clockTick,20)
 
@@ -111,5 +164,3 @@ clockTick()
  
 listen()
 mainloop()
-
-
