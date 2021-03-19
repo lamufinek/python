@@ -13,7 +13,6 @@ import pyglet
 from pyglet.window import key
 
 
-
 class enemy():
     def __init__(self,x,image):
         self.sprite = cocos.sprite.Sprite(image)
@@ -152,7 +151,7 @@ class Game(cocos.layer.ColorLayer):
 
         self.wolves = []
 
-        for i in range(10):
+        for i in range(5):
             wilk = enemy(randint(50,750),self.walkingWolf)
             super().add(wilk.returnSprite())
             self.collision_manager.add(wilk.returnSprite)
@@ -162,22 +161,11 @@ class Game(cocos.layer.ColorLayer):
 
         self.player.do(Move())
         self.schedule(self.update)
-
-        self.points = 0
         self.lives = 10
 
-        self.labelPoints = cocos.text.Label("Points",font_size =32, font_name = "Comic Sans", color = (20,255,20,80))
-        self.labelLives = cocos.text.Label(str(self.lives),font_size =32, font_name = "Comic Sans", color = (255,20,20,80))
-
-        self.labelPoints.position = 700,600
-        self.labelLives.position = 50,600
-        super().add(self.labelPoints)
-        super().add(self.labelLives)
-        self.labelPoints.element.text = str(self.points)
-
+       
 
     def update(self, dt):
-        self.labelLives.element.text = str(self.lives)
         for wilk in self.wolves:
             self.lives = wilk.motion(self.lives)
             
@@ -190,19 +178,7 @@ class Game(cocos.layer.ColorLayer):
                 self.collision_manager.remove_tricky(obj.returnSprite())
                 self.bullets.remove(obj)
 
-        for wilk in self.wolves:
-            for bullet in self.bullets:
-                zmienna = self.collision_manager.they_collide(wilk.returnSprite(),bullet.returnSprite())
-                if(zmienna):
-                    wilk.hitted()
-                    self.points = self.points + 1
-                    self.labelPoints.element.text = str(self.points)
-                    bullet.hitting()
-                    self.collision_manager.remove_tricky(bullet.returnSprite())
-                    self.bullets.remove(bullet)
-                    super().remove(bullet.returnSprite())
-
-
+      
         
         
 
