@@ -32,7 +32,7 @@ class head(Turtle):
         elif(self.direction == "down"):
             x = super().xcor()
             y = super().ycor() - 10
-            super().goto(x,y)
+            super().setpos(x,y)
 
         elif(self.direction == "left"):
             x = super().xcor() - 10
