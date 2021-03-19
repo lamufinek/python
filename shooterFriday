@@ -27,7 +27,7 @@ class enemy():
             self.sprite.height/2
         )
 
-    def motion(self):
+    def motion(self,number):
         self.colorTimer()
         self.setColor()
         if(self.canMove):
@@ -37,7 +37,9 @@ class enemy():
             self.sprite.position = x,y
             if(y<0):
                 self.sprite.position = randint(50,750), 700
+                number = number - 1
             self.sprite.cshape.center = self.sprite.position
+        return number
 
     def returnSprite(self):
         return self.sprite
@@ -165,14 +167,20 @@ class Game(cocos.layer.ColorLayer):
         self.lives = 10
 
         self.labelPoints = cocos.text.Label("Points",font_size =32, font_name = "Comic Sans", color = (20,255,20,80))
+        self.labelLives = cocos.text.Label(str(self.lives),font_size =32, font_name = "Comic Sans", color = (255,20,20,80))
+
         self.labelPoints.position = 700,600
+        self.labelLives.position = 50,600
         super().add(self.labelPoints)
+        super().add(self.labelLives)
         self.labelPoints.element.text = str(self.points)
 
 
     def update(self, dt):
+        self.labelLives.element.text = str(self.lives)
         for wilk in self.wolves:
-            wilk.motion()
+            self.lives = wilk.motion(self.lives)
+            
         
         for obj in self.bullets:
             obj.motion()
@@ -187,6 +195,8 @@ class Game(cocos.layer.ColorLayer):
                 zmienna = self.collision_manager.they_collide(wilk.returnSprite(),bullet.returnSprite())
                 if(zmienna):
                     wilk.hitted()
+                    self.points = self.points + 1
+                    self.labelPoints.element.text = str(self.points)
                     bullet.hitting()
                     self.collision_manager.remove_tricky(bullet.returnSprite())
                     self.bullets.remove(bullet)
