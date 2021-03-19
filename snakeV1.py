@@ -32,7 +32,7 @@ class head(Turtle):
         elif(self.direction == "down"):
             x = super().xcor()
             y = super().ycor() - 10
-            super().setpos(x,y)
+            super().goto(x,y)
 
         elif(self.direction == "left"):
             x = super().xcor() - 10
@@ -54,7 +54,7 @@ class fruit(Turtle):
     def hit(self):
         x = randint(-250,250)
         y = randint(-250,250)
-        super().goto(x,y)
+        super().setpos(x,y)
 
 
 class banan(fruit):
