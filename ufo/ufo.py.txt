@@ -1,0 +1,92 @@
+from __future__ import division
+from random import *
+
+from cocos.actions import *
+#from pyglet.window import *
+import cocos.collision_model as cm
+
+
+import cocos
+import pyglet
+from cocos.director import director
+from pyglet.window import key
+#from cocos import mapcolliders
+
+
+class ourMove(cocos.actions.Move):
+    def step(self,dt):
+        super().step(dt)
+        vel_x=int(keyboard[key.D]-keyboard[key.A])*200    #int(2.9999)= 2
+        vel_y=int(keyboard[key.W]-keyboard[key.S])*200
+
+        self.target.velocity = vel_x,vel_y
+        scroller.set_focus(self.target.x,self.target.y)
+
+
+class ufoLayer(cocos.layer.ScrollableLayer):
+    def __init__(self):
+        super().__init__()
+        self.ufoSprite= cocos.sprite.Sprite("ufo.png", position =(300,300), scale = 0.2)
+        self.ufoSprite.velocity = 0,0
+        super().add(self.ufoSprite, z = 10)
+        self.ufoSprite.do(ourMove())
+        self.ufoSprite.cshape = cm.AARectShape(
+                        self.ufoSprite.position,
+                    self.ufoSprite.width/3,
+                self.ufoSprite.height/3
+        )
+
+
+        self.collision_manager = cm.CollisionManagerBruteForce()
+        self.collision_manager.add(self.ufoSprite)
+        #sprite.do(MoveTo())
+                #sprite.do(MoveBy())
+
+        self.asteroids = []
+        for i in range(13):
+            position = (400+(i*200),randint(50,850))
+            self.asteroids.append(cocos.sprite.Sprite("asteroid.png",position = position,scale =0.4))
+            pos1 = 400+(i*200), 0
+            pos2 = 400+(i*200), 900
+            ruch = MoveTo(pos1,randint(1,3))+MoveTo(pos2,randint(2,4))
+            self.asteroids[i].do(Repeat(ruch))
+            super().add(self.asteroids[i])
+            self.asteroids[i].cshape = cm.AARectShape(
+                        self.asteroids[i].position,
+                    self.asteroids[i].width/3,
+                self.asteroids[i].height/3
+            )
+            self.collision_manager.add(self.asteroids[i])
+
+        self.schedule(self.update)
+
+    def update(self,dt):
+        self.ufoSprite.cshape.center = self.ufoSprite.position
+        for obj in self.asteroids:
+            obj.cshape.center = obj.position
+
+        for obj in self.asteroids:
+            if(self.collision_manager.they_collide(obj,self.ufoSprite)):
+                self.ufoSprite.position = 300,300
+
+class bgLayer(cocos.layer.ScrollableLayer):
+    def __init__(self):
+        super().__init__()
+        self.px_width = 3200
+        self.px_height = 900       
+
+director.init(width=600,height=600, caption = "gra")
+
+director.window.pop_handlers()
+keyboard = key.KeyStateHandler()
+director.window.push_handlers(keyboard)
+
+scena = cocos.scene.Scene()
+
+scroller = cocos.layer.ScrollingManager()
+scroller.add(ufoLayer(),z=10)
+scroller.add(bgLayer(), z = -10)
+
+scena.add(scroller)
+
+director.run(scena)
