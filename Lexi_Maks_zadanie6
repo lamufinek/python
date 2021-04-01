@@ -1,0 +1,19 @@
+from turtle import *
+
+# dowolna pęta for drukująca słowo
+
+
+
+
+
+
+# dowolna pętla for rysująca kształt
+
+
+
+
+
+
+
+zmiennaA = 0
+#pętla while z wykorzystaniem zmiennej A wypsująca słowo 100 razy  

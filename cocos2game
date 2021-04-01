@@ -1,0 +1,132 @@
+from __future__ import division
+
+
+from cocos.actions import Move
+from pyglet.window import key
+import cocos.collision_model as cm
+
+import cocos
+import resources
+import random
+
+class Scena(cocos.layer.ColorLayer):
+    is_event_handler = True
+    def __init__(self):
+        super(Scena,self).__init__(123,50,125,180)
+        self.collision_manager = cm.CollisionManagerBruteForce()
+        self.player = cocos.sprite.Sprite(resources.player)
+        self.player.position = 100,200
+        self.player.velocity = 0,0
+        self.player.scale = 0.1
+        self.kierunek = "prawo"
+        self.player.cshape = cm.AARectShape(
+            self.player.position,
+            self.player.width//4,
+            self.player.height//4
+        )
+        self.collision_manager.add(self.player)
+
+        self.time = 15*60
+
+        super().add(self.player, z =0)
+
+
+        self.batch = cocos.batch.BatchNode()
+        self.enemies = []
+        for i  in range(100):
+            self.enemies.append(cocos.sprite.Sprite(resources.enemy))
+
+        positions = []
+        for i in range(100):
+            positions.append((random.randint(0,500),random.randint(0,500)))
+        for num, enem in enumerate(self.enemies):
+            enem.position = positions[num]
+            enem.scale = 0.05
+            enem.cshape = cm.AARectShape(
+                enem.position,
+                enem.width//4,
+                enem.height//4
+            )
+            self.collision_manager.add(enem)
+            self.batch.add(enem)
+
+        super().add(self.batch, z=1)
+
+
+
+
+
+
+
+        self.player.do(Move())
+        self.schedule(self.update)
+
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol ==key.UP:
+            self.player.velocity = 0, 150
+        elif symbol == key.DOWN:
+            self.player.velocity = 0, -150
+        elif symbol == key.RIGHT:
+            self.player.velocity = 150,0
+            if(self.kierunek!="prawo"):
+                self.player.scale_x = self.player.scale_x*-1
+                self.kierunek="prawo"
+        elif symbol == key.LEFT:
+            self.player.velocity = -150,0
+            if(self.kierunek!="lewo"):
+                self.player.scale_x = self.player.scale_x*-1
+                self.kierunek="lewo"
+        elif symbol == key.SPACE:
+            self.player.velocity = 0,0
+        elif symbol == key.L:
+            self.enlarge()
+
+
+    def update(self, dt):
+        self.mytimer()
+        self.defaultSize()
+        self.player.cshape.center = self.player.position
+        for enem in self.enemies:
+            enem.cshape.center = enem.position
+
+        collisions = self.collision_manager.objs_colliding(self.player)
+        if collisions:
+            for enem in self.enemies:
+                if enem in collisions:
+                    self.enlarge()
+                    self.collision_manager.remove_tricky(enem)
+                    enem.scale=0.0
+
+    def mytimer(self):
+        self.time = self.time -1
+        if(self.time<0):
+            self.time = 0
+        print(self.time)
+
+    def addTime(self):
+        self.time= self.time+60
+
+    def enlarge(self):
+        self.player.scale= self.player.scale + 0.01
+        self.addTime()
+
+    def defaultSize(self):
+        if(self.time<=0 and self.player.scale >0.1):
+            self.player.scale = self.player.scale- 0.01
+            self.time = self.time + 20
+
+
+
+
+
+
+
+
+
+cocos.director.director.init( width = 600,  height = 600, caption = "Nasza gra")
+
+naszascena = Scena()
+scena1 = cocos.scene.Scene(naszascena)
+
+cocos.director.director.run(scena1)

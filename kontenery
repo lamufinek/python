@@ -1,0 +1,68 @@
+from turtle import *
+from random import *
+
+
+class nowaKlasa():
+    def __init__(self, numer, kolor):
+        self.tablica = []
+        for i in range(numer):
+            self.tablica.append(Turtle())
+            self.tablica[i].setheading(i*360/numer)
+            self.tablica[i].speed(0)
+            self.tablica[i].color(kolor)
+        self.number = numer
+
+    def prosto(self, ile):
+
+        for x in range(self.number):
+            self.tablica[x].forward(ile)
+
+    def teleport(self,x,y):
+        for obj in self.tablica:
+            obj.penup()
+            obj.goto(x,y)
+            obj.pendown()
+
+    def rysuj(self):
+        for obj in self.tablica:
+            for i in range(8):
+                obj.forward(2)
+                obj.left(360/8)
+
+
+
+
+class kontener():
+    def __init__(self, liczba1, liczba2, Xstart,Ystart, Xend, Yend):
+        self.kontener = []
+        for i in range(liczba1):
+            self.kontener.append(nowaKlasa(liczba2,"magenta"))
+
+        self.Xodstep = abs(Xstart - Xend)/len(self.kontener)
+        self.Yodstep = abs(Ystart - Yend)/len(self.kontener)
+
+
+        for i in range(len(self.kontener)):
+            x = Xstart + i*self.Xodstep
+            y = Ystart + i*self.Yodstep
+            self.kontener[i].teleport(x,y)
+
+    def rysuj(self):
+        for obj in self.kontener:
+            obj.prosto(20)
+
+
+
+obiektA = kontener(5,6,0,0,250,250)
+obiektA.rysuj()
+
+obiektB = kontener(5,6,-250,-250,-250,250)
+obiektB.rysuj()
+
+#1. argument liczba gwiazdek
+#2.argument to liczba ramion każdej gwiazdki
+#3.argument to pozycja X początku linii gwiazdek
+#4. argument to pozycja Y początku lini gwiazdek
+#5.argument to pozycja X końca linii gwiazdek
+#6.argument to pozycja Y końca linii gwiazdek
+exitonclick()

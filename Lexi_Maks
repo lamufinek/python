@@ -1,0 +1,53 @@
+from turtle import *
+from random import *
+
+
+class nowaKlasa():
+    def __init__(self, numer, kolor):
+        self.tablica = []
+        for i in range(numer):
+            self.tablica.append(Turtle())
+            self.tablica[i].setheading(i*360/numer)
+            self.tablica[i].speed(0)
+            self.tablica[i].color(kolor)
+        self.number = numer
+
+    def prosto(self, ile):
+        for x in range(self.number):
+            self.tablica[x].forward(ile)
+
+    def teleport(self,x,y):
+        for obj in self.tablica:
+            obj.penup()
+            obj.goto(x,y)
+            obj.pendown()
+
+    def rysuj(self):
+        for obj in self.tablica:
+            for i in range(8):
+                obj.forward(2)
+                obj.left(360/8)
+
+
+
+
+
+obiekt1 = nowaKlasa(25, "magenta")
+obiekt2 = nowaKlasa(15, "red")
+obiekt3 = nowaKlasa(20, "light grey")
+
+for i in range(15):
+    obiekt1.teleport(randint(-200,200), randint(-200,200))
+    obiekt1.prosto(randint(40,70))
+    obiekt1.rysuj()
+
+    obiekt2.teleport(randint(-200,200), randint(-200,200))
+    obiekt2.prosto(randint(40,70))
+    obiekt2.rysuj()
+
+    obiekt3.teleport(randint(-200,200), randint(-200,200))
+    obiekt3.prosto(randint(40,70))
+    obiekt3.rysuj()
+
+
+

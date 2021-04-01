@@ -1,0 +1,131 @@
+from turtle import *
+from pyglet.window import key
+
+
+
+class gracz(Turtle):
+    def __init__(self):
+        super().__init__()
+        super().shape("turtle")
+        super().penup()
+        self.kierunek = "w spoczynku"
+
+    def goUp(self):
+        self.kierunek = "up"
+
+    def goDown(self):
+        self.kierunek = "down"
+
+    def goRight(self):
+        self.kierunek = "right"
+
+    def goLeft(self):
+        self.kierunek = "left"
+
+
+    def motion(self):
+        if(self.kierunek == "up"):
+            y = super().ycor() + 2
+            super().sety(y)
+        elif(self.kierunek == "down"):
+            y = super().ycor() - 2
+            super().sety(y)
+        elif(self.kierunek == "right"):
+            x = super().xcor() + 2
+            super().setx(x)
+        elif(self.kierunek == "left"):
+            x = super().xcor() - 2
+            super().setx(x)
+
+class graczV2(Turtle):
+    def __init__(self):
+        super().__init__()
+        super().shape("turtle")
+        super().penup()
+        self.kierunek = "w spoczynku"
+
+    def goUp(self):
+        self.kierunek = "up"
+
+    def goDown(self):
+        self.kierunek = "down"
+
+    def goRight(self):
+        self.kierunek = "right"
+
+    def goLeft(self):
+        self.kierunek = "left"
+
+
+    def motion(self):
+        if(self.kierunek == "up"):
+            y = super().ycor() + 5
+            super().sety(y)
+        elif(self.kierunek == "down"):
+            y = super().ycor() - 5
+            super().sety(y)
+        elif(self.kierunek == "right"):
+            x = super().xcor() + 5
+            super().setx(x)
+        elif(self.kierunek == "left"):
+            x = super().xcor() - 5
+            super().setx(x)
+
+
+
+
+
+bgcolor("mint cream")
+gracz1 = gracz()
+gracz2 = graczV2()
+gracz3 = gracz()
+
+onkey(gracz3.goUp,"w")
+onkey(gracz3.goDown,"s")
+onkey(gracz3.goRight,"d")
+onkey(gracz3.goLeft,"a")
+
+
+onkey(gracz2.goUp,"t")
+onkey(gracz2.goDown,"g")
+onkey(gracz2.goRight,"h")
+onkey(gracz2.goLeft,"f")
+
+
+def powieksz():
+    gracz1.shapesize(1,1)
+
+ontimer(powieksz, 9000)
+
+def powieksz():
+    gracz2.shapesize(2,2)
+
+ontimer(powieksz, 7000)
+
+def powieksz():
+    gracz3.shapesize(3,3)
+
+ontimer(powieksz, 5000)
+
+
+def clockTick():
+    gracz1.motion()
+    gracz2.motion()
+    ontimer(clockTick,20)
+
+
+onkey(gracz1.goUp,"i") #UP
+onkey(gracz1.goDown, "k") #
+onkey(gracz1.goRight,"l")
+onkey(gracz1.goLeft,"j")
+
+gracz1.setheading(90)
+gracz2.setheading(50)
+gracz3.setheading(20)
+
+clockTick()
+#space
+#SPACE
+
+listen()
+mainloop()

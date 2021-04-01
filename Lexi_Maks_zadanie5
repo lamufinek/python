@@ -1,0 +1,141 @@
+from turtle import *
+from random import *
+
+
+
+class head(Turtle):
+    def __init__(self):
+        super().__init__()
+        super().shape("square")
+        super().color("green")
+        super().penup()
+        super().speed(0)
+        super().goto(0,100)
+        self.direction="in rest"
+
+    def up(self):
+        self.direction = "up"
+    def down(self):
+        self.direction = "down"
+    def right(self):
+        self.direction = "right"
+    def left(self):
+        self.direction = "left"
+
+
+    def motion(self):
+        if(self.direction == "up"):
+            x = super().xcor()
+            y = super().ycor() + 10
+            super().goto(x,y)
+        elif(self.direction == "down"):
+            x = super().xcor()
+            y = super().ycor() - 10
+            super().goto(x,y)
+
+        elif(self.direction == "left"):
+            x = super().xcor() - 10
+            y = super().ycor() 
+            super().goto(x,y)
+
+        elif(self.direction == "right"):
+            x = super().xcor() + 10
+            y = super().ycor() 
+            super().goto(x,y)
+        
+class segment(Turtle):
+    def __init___(self,x,y):
+        super().__init__()
+        super().color("red")
+        super().shape("square")
+        super().shapesize(0.8,0.8)
+        super().pensize()
+        super().setpos(x,y)
+
+    def updatePosition(self,x,y):
+        super().setpos(x,y)
+
+
+
+        
+class fruit(Turtle):
+    def __init__(self):
+        super().__init__()
+        super().speed(0)
+        super().penup()
+
+
+    def hit(self):
+        x = randint(-250,250)
+        y = randint(-250,250)
+        super().setpos(x,y)
+
+
+class orange(fruit):
+    def __init__(self):
+        super().__init__()
+        super().color("orange")
+        super().shape("circle")
+        x = randint(-250,250)
+        y = randint(-250,250)
+        super().goto(x,y)
+        super().shapesize(1.5, 1.5)
+
+#orange(metody swoje + metody fruit + metody Turtle -> fruit (metdy swoje + klasy Turtle) -> Turtle (metody tylko swoje) 
+
+
+class banana(fruit):
+    def __init__(self):
+        super().__init__()
+        super().color("yellow")
+        super().shape("circle")
+        x = randint(-250,250)
+        y = randint(-250,250)
+        super().goto(x,y)
+        super().shapesize(0.4, 1.5)
+
+class pomelo(fruit):
+    def __init__(self):
+        super().__init__()
+        super().color("green")
+        super().shape("circle")
+        x = randint(-250,250)
+        y = randint(-250,250)
+        super().goto(x,y)
+        super().shapesize(2.5, 2.5)
+
+
+glowa = head()
+banan = banana()
+pomarancza = orange()
+pomelo = pomelo()
+
+
+def clockTick():
+    glowa.motion()
+
+    if(glowa.distance(banan)<15):
+        banan.hit()
+    if(glowa.distance(pomarancza)<15):
+        pomarancza.hit()
+    if(glowa.distance(pomelo)<15):
+        pomelo.hit()
+
+    ontimer(clockTick,20)
+
+onkey(glowa.up,"w")
+
+onkey(glowa.down,"s")
+
+onkey(glowa.right,"d")
+
+onkey(glowa.left,"a")
+
+clockTick()
+
+        
+ 
+        
+ 
+listen()
+mainloop()

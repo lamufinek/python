@@ -1,0 +1,95 @@
+from __future__ import division
+
+from cocos.actions import Move
+from pyglet.window import key
+import cocos.collision_model as cm
+
+
+import cocos
+import resources
+
+
+class Game(cocos.layer.ColorLayer):
+    is_event_handler = True
+    def __init__(self):
+        super(Game,self).__init__(202, 202, 125, 155)
+        self.collision_manager = cm.CollisionManagerBruteForce()
+        self.player = cocos.sprite.Sprite(resources.player)
+        self.player.position = 400, 25
+        self.player.velocity = 0, 0
+        self.player.speed = 150
+        self.player.scale = (0.05)
+        super().add(self.player, z=2)
+        self.player.cshape = cm.AARectShape(
+            self.player.position,
+            self.player.width//4,
+            self.player.height//4
+        )
+        self.collision_manager.add(self.player)
+
+
+
+        self.batch = cocos.batch.BatchNode()
+        self.enemies = [cocos.sprite.Sprite(resources.enemy)
+                   for i in range(6)]
+        positions = ((250, 125), (550, 125),
+                     (300, 325), (500, 325),
+                     (150, 475), (650, 475))
+        for num, enem in enumerate(self.enemies):
+            enem.position = positions[num]
+            enem.scale = 0.05
+            enem.cshape = cm.AARectShape(
+                enem.position,
+                enem.width//4,
+                enem.height//4
+            )
+            self.collision_manager.add(enem)
+            self.batch.add(enem)
+
+        super().add(self.batch, z=1)
+
+        self.player.do(Move())
+        self.schedule(self.update)
+
+
+    def update(self, dt):
+        self.player.cshape.center = self.player.position
+        for enem in self.enemies:
+            enem.cshape.center = enem.position
+
+        collisions = self.collision_manager.objs_colliding(self.player)
+        if collisions:
+            for num, enem in enumerate(self.enemies):
+                if enem in collisions:
+                    print("You tuched enamy number: "+ str(num))
+                    enem.scale=0.0
+
+
+
+
+
+
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol == key.LEFT:
+            self.player.velocity = -self.player.speed, 0
+        elif symbol == key.RIGHT:
+            self.player.velocity = self.player.speed, 0
+        elif symbol == key.UP:
+            self.player.velocity = 0, self.player.speed
+        elif symbol == key.DOWN:
+            self.player.velocity = 0, -self.player.speed
+        elif symbol == key.SPACE:
+            self.player.velocity = 0, 0
+
+
+cocos.director.director.init(
+    width=800,
+        height=650,
+        caption="Catch your husband!"
+    )
+
+game_layer = Game()
+game_scene = cocos.scene.Scene(game_layer)
+
+cocos.director.director.run(game_scene)
