@@ -76,13 +76,13 @@ for i in range(1000,300,-1):
 
 for i in range(100):
     for j in range(10):
-        print("mongo") #wypisane j*i czyli 10*100
+        print("mongo")
         for o in range(8):
-            print("bongo") #wypisane o*j*i czyli 8*10*100
+            print("bongo")
         for r in range(90):
             for d in range(3):
-                print("diki") #wypidane d*r*j*i czyli 3*90*10*100
+                print("diki")
             for x in range(4):
-                print("zibi") #wypisane x*r*j*i czyli 4*90*1-*100
+                print("zibi")
         for h in range(2):
-            print("twiti") #wypisane  h*j*i
+            print("twiti") 
