@@ -63,6 +63,10 @@ class naszaWarstwa(cocos.layer.ColorLayer):
         if(symbol == key.S):
             self.elf.image = self.animacjaDol
 
+    def on_key_release(self, symbol, modifiers):
+        self.elf.image = self.animacjaSpoczynek
+
+
         
 
 
