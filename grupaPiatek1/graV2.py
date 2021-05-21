@@ -42,19 +42,26 @@ class naszaWarstwa(cocos.layer.ColorLayer):
 
 
 
-        self.elf = cocos.sprite.Sprite(animacjaSpaczynek)
+        self.elf = cocos.sprite.Sprite(self.animacjaSpoczynek)
         self.elf.position = 300,300
         self.elf.velocity = 0,0
         self.elf.do(ourMotion())
-        super().add(self.elf)
-        self.schedule(self.update)
+        super().add(self.elf) 
+        #self.schedule(self.update)
 
     def on_key_press(self, symbol, modifiers):
 
+        if(symbol == key.D):
+            self.elf.image = self.animacjaPrawo
 
+        if(symbol == key.A):
+            self.elf.image = self.animacjaLewo
 
-        if(symbol == key.RIGHT):
-            elf.elf.image = animacjaPrawo
+        if(symbol == key.W):
+            self.elf.image = self.animacjaGora
+
+        if(symbol == key.S):
+            self.elf.image = self.animacjaDol
 
         
 
