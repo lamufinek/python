@@ -33,7 +33,7 @@ class bullet():
 
     def move(self):
         accPosition = self.sprite.position
-        x = accPosition[0] +15
+        x = accPosition[0] + 3
         y = accPosition[1] 
         self.sprite.position = x,y
         self.sprite.cshape.center = self.sprite.position
@@ -63,6 +63,7 @@ director.window.push_handlers(keyboard)
 
 
 mapLayer = load("mapa.tmx")["platformy"]
+
 
 # This time we'll make an action that extends both the Action class and the new RectMapCollider
 # The RectMapCollider, you guessed it, lets us collide with rectmaps (A.K.A. tilemaps)
@@ -167,17 +168,9 @@ class SpriteLayer(ScrollableLayer):
                 self.bullets.remove(obj)
 
     def on_key_press(self, symbol, modifiers):
-        if(symbol == key.Z):
+        if(symbol == key.SPACE):
             self.shoot()
-
-        if(symbol == key.P):
-            self.sprite.position = 100,600
-
-        if(symbol == key.LEFT):
-            self.sprite.image = self.animationLeft
-
-
-                
+        
 
 
 
@@ -194,12 +187,11 @@ class SpriteLayer(ScrollableLayer):
 
 
 spriteLayer = SpriteLayer()
-spriteLayer.sprite.position = 100,600
+spriteLayer.sprite.position = 100,300
 
 
 scroller.add(spriteLayer,z=1)
 scroller.add(mapLayer,z=0)
-scroller.add(bg,z=-1)
 
 
 # From here it's pretty easy sailing
