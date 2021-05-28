@@ -148,7 +148,7 @@ class Enemy():
 
         ruch = MoveBy(przemieszczenie1,t)+MoveBy(przemieszczenie2,t)
 
-        self.sprite.do(ruch)
+        self.sprite.do(Repeat(ruch))
 
     def returnSprite(self):
         return self.sprite
@@ -173,10 +173,15 @@ class SpriteLayer(ScrollableLayer):
 
 
         self.sprite = Sprite(self.animationRight)
+        
+        pozycjaX = 200    
+        for i in range(20):
+            nietoperek = Enemy(pozycjaX+i*300,500,100,100,2)
+            super().add(nietoperek.returnSprite())
+            
+            
 
-        enemy = Enemy(400,400,0,0,1)
 
-        super().add(enemy.returnSprite())
         super().add(self.sprite)
         self.sprite.do(GameAction())
         self.schedule(self.update)
@@ -214,7 +219,7 @@ class SpriteLayer(ScrollableLayer):
 
 
 spriteLayer = SpriteLayer()
-spriteLayer.sprite.position = 100,300
+spriteLayer.sprite.position = 300,500
 
 
 scroller.add(spriteLayer,z=1)
