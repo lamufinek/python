@@ -136,9 +136,24 @@ class GameAction(Action, RectMapCollider):
 
 
 
+class Enemy():
+    def __init__(self,x,y,deltaX,deltaY,t):
+        image = pyglet.image.load("resources/bat1.png")
+        image_gride = pyglet.image.ImageGrid(image,4,4,item_width=32,item_height=32)
+        self.animation = pyglet.image.Animation.from_image_sequence(image_gride[13:17],0.1,True)
+        self.sprite = Sprite(self.animation)
+        self.sprite.position = x,y
+        przemieszczenie1 = deltaX,deltaY
+        przemieszczenie2 = -deltaX,-deltaY
 
+        ruch = MoveBy(przemieszczenie1,t)+MoveBy(przemieszczenie2,t)
 
+        self.sprite.do(ruch)
 
+    def returnSprite(self):
+        return self.sprite
+
+    
 
 
 class SpriteLayer(ScrollableLayer):
@@ -159,8 +174,9 @@ class SpriteLayer(ScrollableLayer):
 
         self.sprite = Sprite(self.animationRight)
 
-        
-        
+        enemy = Enemy(400,400,0,0,1)
+
+        super().add(enemy.returnSprite())
         super().add(self.sprite)
         self.sprite.do(GameAction())
         self.schedule(self.update)
