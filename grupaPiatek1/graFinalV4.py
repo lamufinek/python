@@ -192,7 +192,14 @@ class Game(cocos.layer.ColorLayer):
         self.player.velocity = 0, 0
         self.player.speed =500
 
-        
+        self.wolves = []
+
+        for i in range(5):
+            wilk = enemy(randint(50,750),self.walkingWolf)
+            super().add(wilk.returnSprite())
+            self.collision_manager.add(wilk.returnSprite)
+            self.wolves.append(wilk)
+
         super().add(self.player)
 
         self.player.do(Move())
@@ -201,32 +208,39 @@ class Game(cocos.layer.ColorLayer):
         self.motion = True
         self.points = 0
 
+        self.labelPoints = cocos.text.Label(str(self.points), font_size = 32, font_name = "Comic Sans", color = (255,20,147,100))
+        self.labelLives = cocos.text.Label(str(self.lives), font_size = 32, font_name = "Comic Sans", color = (25,255,25,100))
 
-        self.wilki = []
-        for y in range(10):
-            x = randint(50,750)
-            wilk = enemy(x,self.walkingWolf)
-            self.wilki.append(wilk)
-            super().add(wilk)
-            self.collision_manager.add(wilk)
-            
+        self.naszaEtykieta = cocos.text.Label("Antek",
+                                              font_size = 20,
+                                              font_name = "Comic Sans",
+                                              color = (25,255,25,30))
 
+        self.naszaEtykieta.position = 0,400
+        super().add(self.naszaEtykieta)
         
+        self.labelPoints.position = 700,600
+        self.labelLives.position = 50,600
 
-    
+        super().add(self.labelPoints)
+        super().add(self.labelLives)
+
+        self.canGo = True
+
         
 
        
 
     def update(self, dt):
-        for wilk in self.wilki:
-            wilk.motion(10)
-        
+        self.labelLives.element.text = str(self.lives)
+        for wilk in self.wolves:
+            self.lives = wilk.motion(self.lives)
             
             
         
         for obj in self.bullets:
-            obj.motion()
+            if(self.canGo):
+                obj.motion()
             obj.timer()
             if(obj.terminate):
                 super().remove(obj.returnSprite())
@@ -234,15 +248,27 @@ class Game(cocos.layer.ColorLayer):
                 self.bullets.remove(obj)
 
 
-        for pocisk in self.bullets:
-            for wilk in self.wilki:
-                zmienna = self.collision_manager.they_collide(pocisk.returnSprite()
-                                                          ,wilk.returnSprite())
-            if(zmienna==True):
-                self.wilk.hitted()
-                pocisk.hitting()
-                
-        
+        for wilk in self.wolves:
+            for bullet in self.bullets:
+                zmienna = self.collision_manager.they_collide(wilk.returnSprite(),bullet.returnSprite())
+                if(zmienna):
+                    wilk.hitted()
+                    self.points = self.points + 1
+                    self.labelPoints.element.text = str(self.points)
+                    bullet.hitting()
+                    super().remove(bullet.returnSprite())
+                    #pos= bullet.returnSprite().position
+                    #x = pos[0]
+                    #y=  pos[1]
+                    self.collision_manager.remove_tricky(bullet.returnSprite())
+                    self.bullets.remove(bullet)
+                    #tempBullet = bulletModified((x,y), self.fireballAnimation)
+                    #super().add(tempBullet.returnSprite())
+                    #self.collision_manager.add(tempBullet.returnSprite())
+                    #self.bullets.append(tempBullet)
+                    self.naszaEtykieta.element.text = self.naszaEtykieta.element.text + "XD!"
+                    
+
        
 
         
@@ -282,6 +308,9 @@ class Game(cocos.layer.ColorLayer):
         super().add(tempBullet.returnSprite())
         self.collision_manager.add(tempBullet.returnSprite())
         self.bullets.append(tempBullet)
+
+    def fire(self):
+        self.canGo = not self.canGo
 
 
 
