@@ -54,5 +54,29 @@ for i in range(0,10):
 
 
 
+print(Miasta[2].connections)
+print(Miasta[3].connections)
 
 
+class Mapa():
+    def __init__(self,miasta):
+        self.miasta = miasta
+
+    def findConnection(self, miejsce1, miejsce2):
+        mozliweTrasy = []
+        trasa = []
+
+        for each in self.miasta:
+            if each.name == miejsce1:
+                miasto1 = each
+            if each.name == miejsce2:
+                miasto2 = each
+
+        for each in miasto1.connections:
+            trasa.append(miasto1.name)
+            trasa.append(each)
+            mozliweTrasy.append(trasa)     
+
+
+
+    
