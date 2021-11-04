@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class city()
+class city
 {
     string name;
     vector <string> connections;
@@ -26,7 +26,7 @@ class city()
 };
 
 
-class map()
+class map
 {
     vector <city> cities;
 
