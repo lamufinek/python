@@ -18,6 +18,11 @@ class city()
         connections.push_back(input)
     }
 
+    string returnName()
+    {
+        return name;
+    }
+
 };
 
 
@@ -28,6 +33,26 @@ class map()
     void addCity(city input)
     {
         cities.push_back(input);
+        
+    }
+
+    void findConnection(string inputOne, string inputTwo)
+    {
+        city start;
+        city finish;
+        for(int i = 0; i < cities.size(); i++)
+        {
+            if(cities.at(i).returnName()==inputOne)
+            {
+                start = cities.at(i);
+            }
+
+            if(cities.at(i).returnName()==inputTwo)
+            {
+                finish = cities.at(i);
+            }
+            
+        }
     }
 
 };
