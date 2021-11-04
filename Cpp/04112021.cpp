@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class miasto()
+class city()
 {
     string name;
     vector <string> connections;
@@ -20,45 +20,61 @@ class miasto()
 
 };
 
+
+class map()
+{
+    vector <city> cities;
+
+    void addCity(city input)
+    {
+        cities.push_back(input);
+    }
+
+};
+
 int main()
 {
-    miasto cracov;
+    city cracov;
     cracov.setName("Cracov");
     cracov.addConnection("Hel");
     cracov.addConnection("Bydgoszcz");
     cracov.addConnection("Sosnowiec");
 
-    miasto sosonowiec;
+    city sosonowiec;
     sosonowiec.setName("Sosnowiec");
     sosonowiec.addConnection("Cracov");
     sosonowiec.addConnection("Radom");
 
-    miasto radom;
+    city radom;
     radom.setName("Radom");
     radom.addConnection("Gdynia");
     radom.addConnection("Sosnowiec");
 
-    miasto gdynia;
+    city gdynia;
     gdynia.setName("Gdynia");
     gdynia.addConnection("Radom");
 
-    miasto bydgoszcz;
+    city bydgoszcz;
     bydgoszcz.setName("Bydgoszcz");
     bydgoszcz.addConnection("Cracov");
 
-    miasto hel;
+    city hel;
     hel.setName("Hel");
     hel.addConnection("Cracov");
     hel.addConnection("Wadowice");
 
-    miasto wadowice;
+    city wadowice;
     wadowice.setName("Wadowice");
     wadowice.addConnection("Hel");
 
-
-
-
-
+    map ourMap;
+    ourMap.addCity(wadowice);
+    ourMap.addCity(bydgoszcz);
+    ourMap.addCity(cracov);
+    ourMap.addCity(hel);
+    ourMap.addCity(gdynia);
+    ourMap.addCity(radom);
+    ourMap.addCity(sosonowiec);
 
 
 }
