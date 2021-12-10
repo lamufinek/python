@@ -29,6 +29,6 @@ while(True):
         each.move() 
 
 
-input()
+
 
 
