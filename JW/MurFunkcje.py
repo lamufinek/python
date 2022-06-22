@@ -35,11 +35,19 @@ def kwadrat4(rozmiar,kolor,x,y):
 
 size = 50
 speed(1000)
-for coordY in range(-300,300,size*2):
-    for coordX in range(int(-300-(size/2)),int(300-(size/2)),size):
-        kwadrat4(size,"green",coordX,coordY)
-    for coordX in range(-300,300,size):
-        kwadrat4(size,"green",coordX,coordY+size)
+#for coordY in range(-300,300,size*2):
+#    for coordX in range(int(-300-(size/2)),int(300-(size/2)),size):
+#        kwadrat4(size,"green",coordX,coordY)
+#    for coordX in range(-300,300,size):
+#        kwadrat4(size,"green",coordX,coordY+size)
+
+
+
+for x in range(0,12):
+    for coordY in range(-300+(x*50),-250+(x*50),size):
+        for coordX in range(int(-300+(x*25)),int(300+(x*25)),size):
+            kwadrat4(size,"red",coordX,coordY)
+
 
 
 input()

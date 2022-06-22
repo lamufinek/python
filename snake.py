@@ -8,7 +8,6 @@ class head(Turtle):
         super().__init__()
         super().shape("square")
         super().color("green")
-        super().penup()
         super().speed(0)
         super().goto(0,100)
         self.direction="in rest"
@@ -58,9 +57,7 @@ class body():
         self.Ycoords = []
 
     def enlarge(self,segment):
-        self.segments.append(segment)
-        self.Xcoords.append(segment.xcor())
-        self.Ycoords.append(segment.ycor())
+        pass
 
     def update(self):
         for i in range(len(self.segments)-1, 0, -1 ):
@@ -109,9 +106,7 @@ owoc = fruit(cialo)
 def clockTick():
     ##################################################
     glowa.motion()
-    cialo.update()
-    if(glowa.distance(owoc)<15):
-        owoc.hit()
+    
     ##################################################
     ontimer(clockTick,20)
 
